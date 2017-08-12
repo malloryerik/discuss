@@ -4,10 +4,12 @@ defmodule Discuss.TopicController do
     alias Discuss.Topic  # shorten Discuss.Topic to Topic
 
     def index(conn, _params) do
+                IO.inspect(conn.assigns)
         topics = Repo.all(Topic)
         # render some html, make available a list of topics
         render(conn, "index.html", topics: topics)  
     end
+
 
     def new(conn, params) do
         struct = %Topic{}

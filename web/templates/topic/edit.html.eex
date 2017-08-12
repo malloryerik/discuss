@@ -6,4 +6,5 @@
     </div>
 
     <%= submit "Save Topic", class: "btn btn-primary" %>
+    <%= link "Cancel", to: topic_path(@conn, :index), class: "right cancel-small" %>
 <% end %>

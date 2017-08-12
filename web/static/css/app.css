@@ -15,3 +15,8 @@
     font-weight: "bold";
     color: darkgray;
 }
+
+.cancel-small {
+    color: rgba(139, 0, 0, 0.55);
+    margin-top: 10px;
+}
