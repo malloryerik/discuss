@@ -23,7 +23,7 @@ defmodule Discuss.Router do
     # post "/topics", TopicController, :create
     # get "/topics/:id/edit", TopicController, :edit # :id is a wildcard matcher
     # put "/topics/:id", TopicController, :update
-    # show
+    # show  - just the topic's id number after "/topics/"
     resources "/topics", TopicController
   end
 

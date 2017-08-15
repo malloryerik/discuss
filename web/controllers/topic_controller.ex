@@ -3,6 +3,12 @@ defmodule Discuss.TopicController do
 
     alias Discuss.Topic  # shorten Discuss.Topic to Topic
 
+    # require authentication for these actions
+    plug Discuss.Plugs.RequireAuth when action in [:new, :create, :edit, :delete]
+
+    # function plug
+    plug :check_topic_owner when action in [:update, :edit, :delete]
+
     def index(conn, _params) do
                 IO.inspect(conn.assigns)
         topics = Repo.all(Topic)
@@ -10,6 +16,11 @@ defmodule Discuss.TopicController do
         render(conn, "index.html", topics: topics)  
     end
 
+    def show(conn, %{"id" => topic_id}) do
+           topic = Repo.get!(Topic, topic_id)
+           render conn, "show.html", topic: topic
+
+    end 
 
     def new(conn, params) do
         struct = %Topic{}
@@ -21,11 +32,16 @@ defmodule Discuss.TopicController do
 
     def create(conn, params) do
         %{"topic" => topic} = params
-        changeset = Topic.changeset(%Topic{}, topic)
+        # conn.assigns[:user] -> get user, same as conn.assigns.user
+        changeset = Topic.changeset(%Topic{}, topic) 
+
+        changeset = conn.assigns[:user]
+            |> build_assoc(:topics)
+            |> Topic.changeset(topic)
 
         case Repo.insert(changeset) do
             # redirect user, send success msg
-            {:ok, topic} -> 
+            {:ok, _topic} -> 
                 conn
                 |> put_flash(:info, "Topic Created")
                 |> redirect(to: topic_path(conn, :index))
@@ -62,6 +78,21 @@ defmodule Discuss.TopicController do
             conn
             |> put_flash(:info, "Topic Deleted")
             |> redirect(to: topic_path(conn, :index))
+
+    end
+
+        # plugs are different
+    defp check_topic_owner(conn, _p) do
+        %{params: %{"id" => topic_id}} = conn
+
+        if Repo.get(Topic, topic_id).user_id == conn.assigns.user.id do
+            conn
+        else
+            conn
+            |> put_flash(:error, "You can't edit that")
+            |> redirect(to: topic_path(conn, :index))
+            |> halt()
+        end
 
     end
 end

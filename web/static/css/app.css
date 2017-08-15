@@ -1,4 +1,13 @@
 /* This file is for your main application css. */
+body {
+    font-family: "Kalam", cursive;    
+}
+
+.iliad-logo {
+    font-family: 'Josefin Sans', sans-serif;
+    color: lime !important;
+    font-size: 1.5em !important;
+}
 .help-block {
     color:red;
     text-transform: capitalize;
@@ -12,8 +21,7 @@
 }
 
 .titles {
-    font-weight: "bold";
-    color: darkgray;
+    font-family: "Amatic SC";
 }
 
 .cancel-small {

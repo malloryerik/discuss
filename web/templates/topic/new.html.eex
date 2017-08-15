@@ -1,4 +1,4 @@
-<h5>Sticky's asleep now </h5>
+<h5>Create Your New Topic</h5>
 
 <%= form_for @changeset, topic_path(@conn, :create), fn f ->  %>
     <div class="form-group">
